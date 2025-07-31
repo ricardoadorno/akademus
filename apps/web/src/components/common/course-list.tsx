@@ -4,14 +4,12 @@ import { CourseCard } from '@/components/common/course-card';
 interface CourseListProps {
     courses: Course[];
     isLoading: boolean;
-    onCourseSelected?: (course: Course) => void;
     onCourseDeleted?: () => void;
 }
 
 export const CourseList = ({
     courses,
     isLoading,
-    onCourseSelected,
     onCourseDeleted,
 }: CourseListProps) => {
     if (isLoading) {
@@ -43,7 +41,6 @@ export const CourseList = ({
                 <CourseCard
                     key={course.id}
                     course={course}
-                    onSelected={onCourseSelected}
                     onDeleted={onCourseDeleted}
                 />
             ))}

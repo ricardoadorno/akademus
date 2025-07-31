@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Course } from '@/types/course-types';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useDeleteCourse } from '@/services/course-service';
 import { toast } from 'sonner';
 import { formatDate } from '@/lib/utils';
+import { PATHS } from '@/lib/paths';
 import {
     Dialog,
     DialogContent,
@@ -18,10 +20,10 @@ import {
 interface CourseCardProps {
     course: Course;
     onDeleted?: () => void;
-    onSelected?: (course: Course) => void;
 }
 
-export const CourseCard = ({ course, onDeleted, onSelected }: CourseCardProps) => {
+export const CourseCard = ({ course, onDeleted }: CourseCardProps) => {
+    const navigate = useNavigate();
     const deleteCourse = useDeleteCourse();
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
@@ -37,6 +39,10 @@ export const CourseCard = ({ course, onDeleted, onSelected }: CourseCardProps) =
         }
     };
 
+    const handleViewDetails = () => {
+        navigate(PATHS.courseDetail(String(course.id)));
+    };
+
     return (
         <Card className="w-full">
             <CardHeader>
@@ -50,7 +56,7 @@ export const CourseCard = ({ course, onDeleted, onSelected }: CourseCardProps) =
             <CardFooter className="flex justify-between">
                 <Button
                     variant="outline"
-                    onClick={() => onSelected?.(course)}
+                    onClick={handleViewDetails}
                 >
                     Ver Detalhes
                 </Button>

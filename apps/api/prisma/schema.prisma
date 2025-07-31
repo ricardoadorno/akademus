@@ -49,8 +49,35 @@ model Course {
 
   // Relations
   owner     User      @relation(fields: [ownerId], references: [id])
+  nodes     Node[]
 
   @@index([ownerId])
   @@index([title])
   @@map("courses")
+}
+
+enum NodeType {
+  TEXT
+  IMAGE
+  VIDEO
+  AUDIO
+}
+
+model Node {
+  id          Int       @id @default(autoincrement())
+  courseId    Int       @map("course_id")
+  type        NodeType  @default(TEXT)
+  content     String
+  isFlashcard Boolean   @default(false) @map("is_flashcard")
+  isQuizItem  Boolean   @default(false) @map("is_quiz_item")
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  // Relations
+  course      Course    @relation(fields: [courseId], references: [id])
+
+  @@index([courseId])
+  @@map("nodes")
 }

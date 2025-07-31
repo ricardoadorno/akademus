@@ -67,7 +67,6 @@ Estabelecer a fundação do Academus, permitindo que a **Professora Ana** (nossa
 ### Para cada User Story:
 
 - [ ] Código desenvolvido, revisado e mergeado na branch principal.
-- [ ] Testes unitários implementados para a lógica de negócio.
 - [ ] Funcionalidade testada manualmente no ambiente de desenvolvimento.
 - [ ] Todos os critérios de aceite foram cumpridos.
 
