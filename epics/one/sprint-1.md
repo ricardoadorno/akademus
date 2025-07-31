@@ -1,169 +1,110 @@
-# Sprint 1: Structure and Access
+# Sprint 1: Estrutura e Criação para o Professor
 
 ## Sprint Goal
 
-Establish the technical foundation with authentication and the ability to create the first knowledge "nodes", ensuring data is stored locally.
+Estabelecer a fundação do Academus, permitindo que a **Professora Ana** (nossa persona criadora) se autentique, crie a estrutura de um "Curso" e adicione seus primeiros "Nós" de conhecimento em texto. O objetivo é validar o primeiro passo do nosso JTBD principal: "Quero transformar meu conteúdo em recursos de estudo sem retrabalho".
 
-## Duration
-
-2 weeks
-
-## Total Points
-
-11 points
+**Duração:** 2 semanas  
+**Total de Pontos:** 8 pontos
 
 ---
 
 ## User Stories
 
-### US-01: User Registration and Login
+### US-01: Autenticação do Professor
 
-**As** a new user  
-**I want** to create an account and login simply  
-**So that** I can have a secure and personal space for my content
+> **Como uma** Professora  
+> **Eu quero** criar uma conta e fazer login de forma simples  
+> **Para que** eu possa criar e gerenciar meus cursos em um espaço privado e seguro.
 
-**Points:** 5 points
+**Pontos:** 4
 
-#### Acceptance Criteria
+#### Critérios de Aceite
 
-1. Registration form with email and password
-2. Login form with email and password
-3. After login, I'm redirected to my main map screen
-4. Credentials are stored securely
-
-#### Technical Tasks
-
-- [ ] Configure authentication system
-- [ ] Create registration screen with form validation
-- [ ] Create login screen with validation
-- [ ] Implement post-login redirection
-- [ ] Configure secure credential storage
-- [ ] Implement logout
-- [ ] Add session validation
+1. Formulário de cadastro com e-mail e senha.
+2. Formulário de login com e-mail e senha.
+3. Após o login, sou direcionada para um dashboard inicial onde posso ver meus cursos.
+4. As credenciais são armazenadas de forma segura.
+5. O sistema implementa validação de sessão para manter o usuário logado.
 
 ---
 
-### US-02: Text Node Creation
+### US-02: Estrutura do Curso
 
-**As** a logged-in user  
-**I want** to create a text node in my mind map  
-**So that** I can start recording my ideas and concepts
+> **Como uma** Professora  
+> **Eu quero** criar um "Curso" para agrupar meus Nós de conhecimento  
+> **Para que** eu possa organizar meu material didático por matéria, turma ou tópico.
 
-**Points:** 3 points
+**Pontos:** 1
 
-#### Acceptance Criteria
+#### Critérios de Aceite
 
-1. A button or double-click on screen creates a new node
-2. I can type and edit text within the node
-3. The node can be moved freely around the screen
-4. Creation and editing work offline
-
-#### Technical Tasks
-
-- [ ] Create Canvas component for the mind map
-- [ ] Implement node creation via double-click
-- [ ] Create editable Node component
-- [ ] Implement drag & drop for node movement
-- [ ] Add button for manual node creation
-- [ ] Implement inline text editing
-- [ ] Ensure offline functionality
+1. No meu dashboard, existe um botão para "Criar Novo Curso".
+2. Ao criar, posso dar um nome ao curso (ex: "Biologia Celular - Turma 101").
+3. O novo curso aparece na minha lista de cursos no dashboard.
 
 ---
 
-### US-03: Local Data Persistence
+### US-03: Criação de Nó de Conhecimento
 
-**As** a user  
-**I want** my created nodes to be automatically saved on my device  
-**So that** I can close and reopen the app without losing my work
+> **Como uma** Professora  
+> **Eu quero** criar um "Nó" de conhecimento em formato de texto dentro de um curso  
+> **Para que** eu possa começar a construir o conteúdo modular para minhas aulas.
 
-**Points:** 3 points
+**Pontos:** 3
 
-#### Acceptance Criteria
+#### Critérios de Aceite
 
-1. When closing and reopening the app, all created nodes and their positions are loaded
-2. Saving is local (local-first architecture)
-
-#### Technical Tasks
-
-- [ ] Configure IndexedDB or LocalStorage for persistence
-- [ ] Implement auto-save for nodes
-- [ ] Create data loading system on initialization
-- [ ] Implement saving of node positions
-- [ ] Add persistence error handling
-- [ ] Create data structure for nodes
+1. Dentro da página de um curso, existe um botão para "Adicionar Nó".
+2. Um novo Nó é criado com um editor de texto simples (plain text para o MVP).
+3. O conteúdo do Nó é salvo automaticamente (local-first).
+4. Ao recarregar a página, os Nós criados permanecem visíveis dentro do curso correto.
 
 ---
 
 ## Definition of Done (DoD)
 
-### For each User Story:
+### Para cada User Story:
 
-- [ ] Code developed and reviewed
-- [ ] Unit tests implemented
-- [ ] Functionality manually tested
-- [ ] All acceptance criteria met
-- [ ] Functionality works offline
-- [ ] Technical documentation updated
+- [ ] Código desenvolvido, revisado e mergeado na branch principal.
+- [ ] Testes unitários implementados para a lógica de negócio.
+- [ ] Funcionalidade testada manualmente no ambiente de desenvolvimento.
+- [ ] Todos os critérios de aceite foram cumpridos.
 
-### For the Sprint:
+### Para a Sprint:
 
-- [ ] All user stories completed
-- [ ] Functional app with three main features
-- [ ] Data persists locally
-- [ ] Authentication system functional
-- [ ] Deploy to development environment
+- [ ] Todas as User Stories foram concluídas e aceitas.
+- [ ] O fluxo "Login -> Criar Curso -> Adicionar Nós" está funcional.
+- [ ] Os dados de cursos e nós persistem localmente.
+- [ ] A build da aplicação é implantada no ambiente de desenvolvimento.
 
 ---
 
-## Technical Architecture
-
-### Suggested Stack
-
-- **Frontend:** React/Vue.js + TypeScript
-- **Canvas:** HTML5 Canvas or SVG
-- **Persistence:** IndexedDB (via Dexie.js)
-- **Authentication:** Firebase Auth or Supabase
-- **Styling:** Tailwind CSS or Styled Components
-
-### Data Structure
+## Estrutura de Dados (Revisada)
 
 ```json
 {
   "user": {
-    "id": "string",
+    "id": "uuid",
     "email": "string",
-    "createdAt": "timestamp"
+    "role": "professor"
   },
+  "courses": [
+    {
+      "id": "uuid",
+      "owner_id": "uuid",
+      "title": "string"
+    }
+  ],
   "nodes": [
     {
-      "id": "string",
+      "id": "uuid",
+      "course_id": "uuid",
       "type": "text",
       "content": "string",
-      "position": { "x": "number", "y": "number" },
       "isFlashcard": false,
-      "createdAt": "timestamp",
-      "updatedAt": "timestamp"
+      "isQuizItem": false
     }
   ]
 }
 ```
-
----
-
-## Risks and Mitigations
-
-| Risk                         | Probability | Impact | Mitigation                                   |
-| ---------------------------- | ----------- | ------ | -------------------------------------------- |
-| Canvas complexity            | Medium      | High   | Use ready-made library (Konva.js, Fabric.js) |
-| Offline persistence issues   | Low         | High   | Extensive testing with IndexedDB             |
-| Authentication configuration | Low         | Medium | Detailed provider documentation              |
-
----
-
-## Sprint Deliverables
-
-1. **Functional web app** with authentication
-2. **Mind map interface** with node creation and editing
-3. **Local persistence system** working
-4. **Technical documentation** of implemented architecture
-5. **Automated tests** for critical functionalities

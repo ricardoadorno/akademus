@@ -15,10 +15,15 @@ export const AuthenticatedLayout = () => {
     }
 
     return (
-        <div className="min-h-screen bg-background">
-            <main>
+        <div className="min-h-screen bg-background flex flex-col">
+            <main className="flex-grow">
                 <Outlet />
             </main>
+            <footer className="py-4 border-t">
+                <div className="container mx-auto text-center text-sm text-muted-foreground">
+                    <p>Akademus - Plataforma para Professores © 2025</p>
+                </div>
+            </footer>
         </div>
     );
 };

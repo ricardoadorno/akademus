@@ -1,22 +1,15 @@
-import { useAuth } from '@/hooks/use-auth';
-import { Button } from '@/components/ui/button';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { PATHS } from '@/lib/paths';
+import { LoadingScreen } from '@/components/common/loading-screen';
 
 export const AppPage = () => {
-    const { user, logout } = useAuth();
+    const navigate = useNavigate();
 
-    return (
-        <div className="container mx-auto p-6">
-            <div className="space-y-6">
+    useEffect(() => {
+        // Redireciona para o dashboard
+        navigate(PATHS.dashboard);
+    }, [navigate]);
 
-                <div className="flex justify-end gap-4 items-center">
-                    <span className="text-lg font-semibold">
-                        Welcome, {user?.firstName || 'Guest'}
-                    </span>
-                    <Button onClick={() => logout()} variant="outline">
-                        Logout
-                    </Button>
-                </div>
-            </div>
-        </div>
-    );
+    return <LoadingScreen message="Redirecionando..." />;
 };

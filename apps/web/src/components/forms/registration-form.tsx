@@ -22,8 +22,12 @@ const registrationSchema = z.object({
 
 type RegistrationFormData = z.infer<typeof registrationSchema>;
 
+interface RegistrationFormProps {
+    onSwitchToLogin?: () => void;
+}
 
-export const RegistrationForm = () => {
+
+export const RegistrationForm = ({ onSwitchToLogin }: RegistrationFormProps) => {
     const { register: registerUser, isLoading } = useAuth();
     const [error, setError] = useState<string | null>(null);
 
@@ -135,6 +139,21 @@ export const RegistrationForm = () => {
                     <Button type="submit" className="w-full" disabled={isLoading}>
                         {isLoading ? 'Creating Account...' : 'Create Account'}
                     </Button>
+
+                    {onSwitchToLogin && (
+                        <div className="text-center mt-4">
+                            <p className="text-sm text-muted-foreground">
+                                Already have an account?{' '}
+                                <Button
+                                    variant="link"
+                                    className="p-0"
+                                    onClick={onSwitchToLogin}
+                                >
+                                    Sign in
+                                </Button>
+                            </p>
+                        </div>
+                    )}
                 </form>
             </CardContent>
         </Card>

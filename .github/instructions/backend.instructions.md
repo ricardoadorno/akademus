@@ -1,15 +1,17 @@
-# GitHub Copilot Instructions for NestJS Backend Project
+---
+applyTo: 'apps/api/**/*'
+---
 
-## Project Overview
+# Copilot Instructions - Backend (NestJS/Prisma)
 
-This is a NestJS backend application using Prisma ORM with TypeScript. Follow these patterns and conventions consistently.
+You are helping with the backend NestJS application in the `apps/api` directory using Prisma ORM with TypeScript. Follow these patterns and conventions consistently.
 
 ## Architecture Patterns
 
 ### Resource Structure (NestJS CLI Pattern)
 
 ```
-src/
+apps/api/src/
 ├── modules/
 │   └── [resource]/
 │       ├── dto/
@@ -165,9 +167,7 @@ export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
   async create(createUserDto: CreateUserDto) {
-    const existingUser = await this.usersRepository.findByEmail(
-      createUserDto.email,
-    );
+    const existingUser = await this.usersRepository.findByEmail(createUserDto.email);
     if (existingUser) {
       throw new ConflictException('User with this email already exists');
     }

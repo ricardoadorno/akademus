@@ -4,6 +4,7 @@ import { PublicLayout } from '@/components/layout/public-layout';
 import { LoginPage } from '@/pages/login';
 import { RegisterPage } from '@/pages/register';
 import { AppPage } from '@/pages/app';
+import { DashboardPage } from '@/pages/dashboard';
 import { NotFoundPage } from '@/pages/not-found';
 import { PATHS } from './lib/paths';
 
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 element: <AppPage />,
+            },
+            {
+                path: "dashboard",
+                element: <DashboardPage />,
             },
             // You can add more app sub-routes here
             // {

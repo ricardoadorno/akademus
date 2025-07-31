@@ -18,8 +18,11 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
+interface LoginFormProps {
+    onSwitchToRegister?: () => void;
+}
 
-export const LoginForm = () => {
+export const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
     const { login, isLoading } = useAuth();
     const navigate = useNavigate();
     const [error, setError] = useState<string | null>(null);
@@ -95,6 +98,20 @@ export const LoginForm = () => {
                         {isLoading ? 'Signing In...' : 'Sign In'}
                     </Button>
 
+                    {onSwitchToRegister && (
+                        <div className="text-center mt-4">
+                            <p className="text-sm text-muted-foreground">
+                                Don't have an account?{' '}
+                                <Button
+                                    variant="link"
+                                    className="p-0"
+                                    onClick={onSwitchToRegister}
+                                >
+                                    Register
+                                </Button>
+                            </p>
+                        </div>
+                    )}
                 </form>
             </CardContent>
         </Card>
