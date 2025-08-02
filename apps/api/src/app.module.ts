@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { CoursesModule } from './modules/courses/courses.module';
 import { NodesModule } from './modules/nodes/nodes.module';
+import { HealthModule } from './modules/health/health.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -18,6 +19,7 @@ import configuration from './config/configuration';
     UsersModule,
     CoursesModule,
     NodesModule,
+    HealthModule,
   ],
 })
 export class AppModule {}
