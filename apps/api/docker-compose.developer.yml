@@ -15,30 +15,15 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - akademus-network
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-
-  migrate:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: npx prisma migrate deploy
-    env_file:
-      - .env.development
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks:
-      - akademus-network
+    # Configurações para EC2 pequeno
+    mem_limit: 256m
+    cpus: 0.5
+    command: postgres -c shared_buffers=64MB -c max_connections=50
 
   api:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     container_name: akademus-api-dev
     restart: unless-stopped
     env_file:
@@ -46,16 +31,16 @@ services:
     ports:
       - '3000:3000'
     depends_on:
-      migrate:
-        condition: service_completed_successfully
+      - postgres
     networks:
       - akademus-network
-    healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:3000/health']
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
+    # Limites para EC2 pequeno
+    mem_limit: 512m
+    cpus: 0.7
+    volumes:
+      # Mount code for development hot reload
+      - .:/app
+      - /app/node_modules
 
 volumes:
   postgres_data:
