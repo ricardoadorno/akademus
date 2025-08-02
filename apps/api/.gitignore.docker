@@ -1,0 +1,9 @@
+# Environment files
+.env*
+!.env.example
+
+# Docker Compose override files
+docker-compose.override.yml
+
+# Development database files
+postgres_data/

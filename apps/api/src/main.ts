@@ -20,8 +20,8 @@ async function bootstrap() {
 
   // Swagger setup
   const config = new DocumentBuilder()
-    .setTitle('Cortex API')
-    .setDescription('Mind mapping application API')
+    .setTitle('Akademus API')
+    .setDescription('Educational platform API')
     .setVersion('1.0')
     .addBearerAuth()
     .build();

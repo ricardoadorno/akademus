@@ -5,11 +5,12 @@ services:
     image: postgres:15-alpine
     container_name: akademus-postgres-dev
     restart: unless-stopped
+    env_file:
+      - .env.development
     environment:
-      POSTGRES_DB: cortex_dev
-      POSTGRES_USER: username
-      POSTGRES_PASSWORD: password
-      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - '5432:5432'
     volumes:
@@ -20,7 +21,7 @@ services:
     networks:
       - akademus-network
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U username -d cortex_dev']
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -34,16 +35,21 @@ services:
     restart: unless-stopped
     ports:
       - '3000:3000'
+    env_file:
+      - .env.development
     environment:
       NODE_ENV: development
-      DATABASE_URL: postgresql://username:password@postgres:5432/cortex_dev
-      JWT_SECRET: your-jwt-secret-key
-      JWT_EXPIRES_IN: 7d
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
+      PORT: ${PORT}
+      LOG_LEVEL: ${LOG_LEVEL}
     volumes:
       # Mount source code for development (hot reload)
       - ./src:/app/src
       - ./prisma:/app/prisma
-      - /app/node_modules
+      # Mount .env file for runtime configuration
+      - ./.env.development:/app/.env.development
     networks:
       - akademus-network
     depends_on:

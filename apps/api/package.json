@@ -1,7 +1,7 @@
 {
-  "name": "cortex",
+  "name": "akademus-api",
   "version": "0.0.1",
-  "description": "",
+  "description": "Akademus API - Backend service for the Akademus platform",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
