@@ -2,6 +2,9 @@ version: '3.8'
 
 services:
   akademus-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: akademus-api:latest
     container_name: akademus-api
     restart: unless-stopped
