@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: akademus-postgres-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: cortex_dev
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - '5432:5432'
+    volumes:
+      # Persist data between container restarts
+      - postgres_data:/var/lib/postgresql/data
+      # Optional: Custom initialization scripts
+      - ./prisma/init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - akademus-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U username -d cortex_dev']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: akademus-api-dev
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://username:password@postgres:5432/cortex_dev
+      JWT_SECRET: your-jwt-secret-key
+      JWT_EXPIRES_IN: 7d
+    volumes:
+      # Mount source code for development (hot reload)
+      - ./src:/app/src
+      - ./prisma:/app/prisma
+      - /app/node_modules
+    networks:
+      - akademus-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  postgres_data:
+    name: akademus-postgres-data
+
+networks:
+  akademus-network:
+    name: akademus-dev-network
+    driver: bridge

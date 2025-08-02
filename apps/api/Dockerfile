@@ -10,6 +10,8 @@ COPY package*.json ./
 COPY tsconfig*.json ./
 COPY prisma ./prisma/
 COPY src ./src/
+# Copy .env file for build-time configuration
+COPY .env* ./
 RUN npm ci
 RUN npx prisma generate
 RUN npm run build
@@ -26,6 +28,8 @@ COPY --from=deps --chown=nestjs:nodejs /app/node_modules ./node_modules
 COPY --from=deps --chown=nestjs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nestjs:nodejs /app/dist ./dist
 COPY --chown=nestjs:nodejs package*.json ./
+# Copy environment file to runtime
+COPY --chown=nestjs:nodejs .env* ./
 
 USER nestjs
 EXPOSE 3000

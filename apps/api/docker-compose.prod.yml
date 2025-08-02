@@ -1,6 +1,24 @@
 version: '3.8'
 
 services:
+  postgres:
+    image: postgres:15
+    container_name: akademus-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: akademus
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-postgres}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   akademus-api:
     build:
       context: .
@@ -12,10 +30,14 @@ services:
       - '3000:3000'
     environment:
       - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:${DATABASE_PASSWORD:-postgres}@postgres:5432/akademus
     env_file:
       - .env
     volumes:
       - ./logs:/app/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
     healthcheck:
       test: ['CMD', 'curl', '-f', 'http://localhost:3000/health']
       interval: 30s
@@ -33,3 +55,6 @@ services:
       options:
         max-size: '10m'
         max-file: '3'
+
+volumes:
+  postgres_data:
