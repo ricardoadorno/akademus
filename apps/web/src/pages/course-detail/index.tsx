@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCourse } from '@/services/course-service';
 import { useNodesByCourseId } from '@/services/node-service';

@@ -6,11 +6,19 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:prod": "npm run build",
+    "build:prod:linux": "VITE_API_URL=$VITE_API_URL npm run build",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "cypress run",
     "test:open": "cypress open",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "deploy:s3": "aws s3 sync dist/ s3://akademus-web-bucket --delete",
+    "deploy:s3:win": "aws s3 sync dist\\ s3://akademus-web-bucket --delete",
+    "invalidate:cloudfront": "aws cloudfront create-invalidation --distribution-id %CLOUDFRONT_DISTRIBUTION_ID% --paths \"/*\"",
+    "invalidate:cloudfront:linux": "aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths '/*'",
+    "deploy": "npm run build:prod && npm run deploy:s3 && npm run invalidate:cloudfront",
+    "deploy:linux": "npm run build:prod:linux && npm run deploy:s3 && npm run invalidate:cloudfront:linux"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",

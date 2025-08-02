@@ -23,7 +23,10 @@
     "db:migrate": "prisma migrate dev",
     "db:migrate:prod": "prisma migrate deploy",
     "db:studio": "prisma studio",
-    "db:seed": "ts-node prisma/seed.ts"
+    "db:seed": "ts-node prisma/seed.ts",
+    "build:docker": "docker build -t akademus-api:latest .",
+    "deploy:local": "docker-compose -f docker-compose.prod.yml up -d",
+    "logs": "docker-compose -f docker-compose.prod.yml logs -f"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

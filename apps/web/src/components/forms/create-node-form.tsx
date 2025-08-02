@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Control } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
@@ -34,8 +34,8 @@ interface CreateNodeFormProps {
 // Define o tipo para o formulário
 type FormValues = {
     content: string;
-    isFlashcard: boolean;
-    isQuizItem: boolean;
+    isFlashcard?: boolean;
+    isQuizItem?: boolean;
 };
 
 const formSchema = z.object({
@@ -96,7 +96,7 @@ export const CreateNodeForm = ({ courseId, onSuccess }: CreateNodeFormProps) => 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
                         <FormField
-                            control={form.control as any}
+                            control={form.control as Control<FormValues>}
                             name="content"
                             render={({ field }) => (
                                 <FormItem>
@@ -115,7 +115,7 @@ export const CreateNodeForm = ({ courseId, onSuccess }: CreateNodeFormProps) => 
 
                         <div className="flex flex-col gap-4">
                             <FormField
-                                control={form.control as any}
+                                control={form.control as Control<FormValues>}
                                 name="isFlashcard"
                                 render={({ field }) => (
                                     <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
@@ -137,7 +137,7 @@ export const CreateNodeForm = ({ courseId, onSuccess }: CreateNodeFormProps) => 
                             />
 
                             <FormField
-                                control={form.control as any}
+                                control={form.control as Control<FormValues>}
                                 name="isQuizItem"
                                 render={({ field }) => (
                                     <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
