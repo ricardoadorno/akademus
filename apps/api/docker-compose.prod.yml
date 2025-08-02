@@ -1,12 +1,10 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:15-alpine
     container_name: akademus-postgres-prod
     restart: unless-stopped
     env_file:
-      - .env.production
+      - .env
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -31,7 +29,7 @@ services:
     container_name: akademus-api-prod
     restart: unless-stopped
     env_file:
-      - .env.production
+      - .env
     ports:
       - '3000:3000'
     depends_on:
