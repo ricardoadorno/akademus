@@ -5,6 +5,7 @@ WORKDIR /app
 
 # Install apenas curl (necessário) sem cache
 RUN apk add --no-cache curl
+RUN npm install -g @nestjs/cli
 
 # Copy package files
 COPY package*.json ./

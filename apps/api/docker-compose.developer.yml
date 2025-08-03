@@ -15,10 +15,8 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - akademus-network
-    # Configurações para EC2 pequeno
     mem_limit: 256m
     cpus: 0.5
-    command: postgres -c shared_buffers=64MB -c max_connections=50
 
   api:
     build:
@@ -34,11 +32,9 @@ services:
       - postgres
     networks:
       - akademus-network
-    # Limites para EC2 pequeno
     mem_limit: 512m
     cpus: 0.7
     volumes:
-      # Mount code for development hot reload
       - .:/app
       - /app/node_modules
 
